@@ -116,12 +116,12 @@ def shape_detector():
                 # 7. Anotar los contornos sobre la imagen monocromática y visualizarla
                 if len(saved_shape) > 0 and cv2.matchShapes(contour, saved_shape, cv2.CONTOURS_MATCH_I2, 0) < (sensibility_trackbar_val/100):
                     # Todos los contornos cuyos momentos de Hu sean considerados similares a el contorno guardado se muestran en color verde.
-                    cv2.drawContours(new_frame, [contour], -1, (0, 255, 0), 3)
+                    cv2.drawContours(frame, [contour], -1, (0, 255, 0), 3)
                 else:
                     # Todos los demas contornos se muestran con un contorno en rojo.
-                    cv2.drawContours(new_frame, [contour], -1, (0, 0, 255), 3)
+                    cv2.drawContours(frame, [contour], -1, (0, 0, 255), 3)
 
-        cv2.imshow(window_name, cv2.flip(new_frame, 1))
+        cv2.imshow(window_name, cv2.flip(frame, 1))
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
