@@ -1,15 +1,37 @@
 import cv2
-
-
-features = []
-labels = []
+import csv
+import numpy as np
+from tp1ShapeDetector.machine_learning.utils.dataset import label_to_int
 
 
 def load_dataset():
-    return
+    with open('../dataset/moments.csv', mode='r') as file:
+        features = []
+        labels = []
+
+        reader = csv.reader(file)
+        for row in reader:
+            features.append((row[:6]))
+            labels.append(label_to_int(row[7]))
+
+        features = np.array(features, dtype=np.float32)
+        labels = np.array(labels, dtype=np.int32)
+    return features, labels
 
 
 def train():
-    # cv2.ml.SVM_create()
+    features, labels = load_dataset()
+
+    print(features)
+
+    classifier = cv2.ml.SVM_create()
+    classifier.setKernel(cv2.ml.SVM_RBF)
+
+    classifier.train(features, cv2.ml.ROW_SAMPLE, labels)
+    classifier.save('svm_data.dat')
+
     return
+
+
+train()
 

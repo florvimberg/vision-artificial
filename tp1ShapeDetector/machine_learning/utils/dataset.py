@@ -5,6 +5,12 @@ import numpy as np
 from tp1ShapeDetector.utils.common_utils import get_greatest_contour
 
 
+labels = {
+    "rectangle": 1,
+    "star": 2,
+    "triangle": 3,
+}
+
 # Genera los momentos de Hu dado un filename, en este caso particular nuestro filename es igual a nuestro label.
 def generate_hu_moments_for_shape(filename, writer):
     pathname = '../dataset/images/{}/*.png'.format(filename)
@@ -44,6 +50,22 @@ def generate_hu_moments():
         generate_hu_moments_for_shape('rectangle', writer)
         generate_hu_moments_for_shape('star', writer)
         generate_hu_moments_for_shape('triangle', writer)
+
+
+# Convierto un label de interes en un valor entero para el entrenamiento.
+def label_to_int(label):
+    global labels
+    return int(labels.get(label))
+
+
+# Convierto de un valor entero al label que me interesa, devuelvo None si no existe.
+def int_to_label(search):
+    global labels
+    for key, value in labels.items():
+        if value == search:
+            return key
+
+    return None
 
 
 generate_hu_moments()
