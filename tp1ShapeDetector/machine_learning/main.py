@@ -1,5 +1,6 @@
 import cv2
 
+from tp1ShapeDetector.machine_learning.utils.dataset import int_to_label
 from tp1ShapeDetector.tp1 import get_greatest_contour
 from tp1ShapeDetector.utils.common_utils import print_hu_moments
 
@@ -7,6 +8,9 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
     saved_shape = []
     window_name = 'Machine Learning - Shape detector'
+    model_path = './utils/svm_data.dat'
+
+    classifier = cv2.ml.SVM_load(model_path)
 
     while True:
         _, frame = cap.read()
@@ -24,26 +28,11 @@ if __name__ == '__main__':
         if len(contours) > 0:
             greatest_contour = get_greatest_contour(contours)
 
-            sensibility_trackbar_val = cv2.getTrackbarPos('Sensibility trackbar', window_name)
-            cv2.drawContours(new_frame, [greatest_contour], -1, (255, 0, 0), 12)
+            moments = cv2.moments(greatest_contour)
+            hu_moments = cv2.HuMoments(moments)
 
-            if cv2.waitKey(1) & 0xFF == ord('f'):
-                saved_shape = greatest_contour
-
-            if cv2.waitKey(1) & 0xFF == ord('p'):
-                print_hu_moments(greatest_contour, saved_shape)
-
-            # 6. Clasificación binaria: Aplicar un criterio sobre los invariantes para decidir si el contorno corresponde o no a la pieza a reconocer
-            for contour in contours:
-                # compares hu moments from two contours
-                # 7. Anotar los contornos sobre la imagen monocromática y visualizarla
-                if len(saved_shape) > 0 and cv2.matchShapes(contour, saved_shape, cv2.CONTOURS_MATCH_I2, 0) < (
-                        sensibility_trackbar_val / 100):
-                    # Todos los contornos cuyos momentos de Hu sean considerados similares a el contorno guardado se muestran en color verde.
-                    cv2.drawContours(frame, [contour], -1, (0, 255, 0), 3)
-                else:
-                    # Todos los demas contornos se muestran con un contorno en rojo.
-                    cv2.drawContours(frame, [contour], -1, (0, 0, 255), 3)
+            prediction = classifier.predict(hu_moments)[1]
+            print(int_to_label(prediction))
 
         cv2.imshow(window_name, cv2.flip(frame, 1))
 
