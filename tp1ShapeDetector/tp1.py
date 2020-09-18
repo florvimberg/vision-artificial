@@ -15,7 +15,10 @@
 #   la forma de anotación queda a criterio de los alumnos
 import cv2
 
-if __name__ == '__main__': print('TP 1')
+from tp1ShapeDetector.utils.common_utils import print_hu_moments, get_greatest_contour
+
+if __name__ == '__main__':
+    print('TP 1')
 
 
 def on_trackbar_change(val):
@@ -32,32 +35,6 @@ trackbar_name2 = 'Sensibility trackbar'
 cv2.namedWindow(window_name)
 slider_max2 = 100
 cv2.createTrackbar(trackbar_name2, window_name, 10, slider_max2, on_trackbar_change)
-
-# Da como resultado el contorno con el area maxima dada una lista de contornos.
-def get_greatest_contour(contours):
-    max_contour = contours[0]
-    for contour in contours:
-        if cv2.contourArea(contour) > cv2.contourArea(max_contour):
-            max_contour = contour
-
-    return max_contour
-
-
-# Calcula los momentos de Hu en base a un contorno
-def get_hu_moments(contour):
-    moments = cv2.moments(contour)
-    return cv2.HuMoments(moments)
-
-
-def print_hu_moments(greatest_contour, saved_contours):
-    if greatest_contour is not None and len(saved_contours) > 0:
-        greatest_hu_moments = get_hu_moments(greatest_contour)
-        saved_shape_hu_moments = get_hu_moments(saved_contours)
-
-        print('Greatest Contour Hu Moments:\n{}'.format(greatest_hu_moments))
-        print('Saved Contours Hu Moments:\n{}'.format(saved_shape_hu_moments))
-    else:
-        print("No se tiene un contorno guardado actualmente, para guardar uno presione F")
 
 
 def shape_detector():
