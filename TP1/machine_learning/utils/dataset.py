@@ -2,14 +2,14 @@ import glob
 import cv2
 import csv
 import numpy as np
-from tp1ShapeDetector.utils.common_utils import get_greatest_contour
-
+from TP1.common.common_utils import get_greatest_contour
 
 labels = {
     "rectangle": 1,
     "star": 2,
     "triangle": 3,
 }
+
 
 # Genera los momentos de Hu dado un filename, en este caso particular nuestro filename es igual a nuestro label.
 def generate_hu_moments_for_shape(filename, writer):
@@ -68,4 +68,5 @@ def int_to_label(search):
     return None
 
 
-generate_hu_moments()
+if __name__ == '__main__':
+    generate_hu_moments()

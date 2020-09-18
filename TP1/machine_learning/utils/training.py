@@ -1,7 +1,7 @@
 import cv2
 import csv
 import numpy as np
-from tp1ShapeDetector.machine_learning.utils.dataset import label_to_int
+from TP1.machine_learning.utils.dataset import label_to_int
 
 
 def load_dataset():
@@ -11,7 +11,7 @@ def load_dataset():
 
         reader = csv.reader(file)
         for row in reader:
-            features.append((row[:6]))
+            features.append((row[:7]))
             labels.append(label_to_int(row[7]))
 
         features = np.array(features, dtype=np.float32)
@@ -22,8 +22,6 @@ def load_dataset():
 def train():
     features, labels = load_dataset()
 
-    print(features)
-
     classifier = cv2.ml.SVM_create()
     classifier.setKernel(cv2.ml.SVM_RBF)
 
@@ -33,5 +31,7 @@ def train():
     return
 
 
-train()
+if __name__ == '__main__':
+    train()
+
 

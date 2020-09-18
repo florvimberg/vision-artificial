@@ -14,28 +14,7 @@
 #   usar rojo para los contornos desconocidos
 #   la forma de anotación queda a criterio de los alumnos
 import cv2
-
-from tp1ShapeDetector.utils.common_utils import print_hu_moments, get_greatest_contour
-
-if __name__ == '__main__':
-    print('TP 1')
-
-
-def on_trackbar_change(val):
-    pass
-
-
-window_name = 'Shape detector'
-trackbar_name = 'Trackbar'
-cv2.namedWindow(window_name)
-slider_max = 150
-cv2.createTrackbar(trackbar_name, window_name, 50, slider_max, on_trackbar_change)
-
-trackbar_name2 = 'Sensibility trackbar'
-cv2.namedWindow(window_name)
-slider_max2 = 100
-cv2.createTrackbar(trackbar_name2, window_name, 10, slider_max2, on_trackbar_change)
-
+from TP1.common.common_utils import get_greatest_contour, print_hu_moments
 
 def shape_detector():
     cap = cv2.VideoCapture(0)
@@ -77,7 +56,7 @@ def shape_detector():
             sensibility_trackbar_val = cv2.getTrackbarPos('Sensibility trackbar', window_name)
 
             # Se muestra el contorno mas grande en color azul para diferenciar del resto con un grosor mayor.
-            cv2.drawContours(new_frame, [greatest_contour], -1, (255, 0, 0), 12)
+            cv2.drawContours(frame, [greatest_contour], -1, (255, 0, 0), 12)
 
             # Con el comando F se guarda el contorno de mayor area.
             if cv2.waitKey(1) & 0xFF == ord('f'):
@@ -104,4 +83,20 @@ def shape_detector():
             break
 
 
-shape_detector()
+if __name__ == '__main__':
+
+    def on_trackbar_change(val):
+        pass
+
+    window_name = 'Shape detector'
+    trackbar_name = 'Trackbar'
+    cv2.namedWindow(window_name)
+    slider_max = 150
+    cv2.createTrackbar(trackbar_name, window_name, 50, slider_max, on_trackbar_change)
+
+    trackbar_name2 = 'Sensibility trackbar'
+    cv2.namedWindow(window_name)
+    slider_max2 = 100
+    cv2.createTrackbar(trackbar_name2, window_name, 10, slider_max2, on_trackbar_change)
+
+    shape_detector()
