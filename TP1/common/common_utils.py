@@ -37,3 +37,8 @@ def get_greatest_contour(contours):
 def get_hu_moments(contour):
     moments = cv2.moments(contour)
     return cv2.HuMoments(moments)
+
+
+# Filtra los contornos que sean mayores a un max_area o menores a un min_area
+def filter_contours(contours, min_area, max_area):
+    return list(filter(lambda contour: min_area < cv2.contourArea(contour) < max_area, contours))
