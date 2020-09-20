@@ -1,7 +1,7 @@
 import cv2
 import csv
 import numpy as np
-from TP1.machine_learning.utils.dataset import label_to_int
+from machine_learning.utils.dataset import label_to_int
 
 
 def load_dataset():

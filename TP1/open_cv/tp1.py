@@ -14,7 +14,7 @@
 #   usar rojo para los contornos desconocidos
 #   la forma de anotación queda a criterio de los alumnos
 import cv2
-from TP1.common.common_utils import get_greatest_contour, print_hu_moments, filter_contours
+from common.common_utils import get_greatest_contour, print_hu_moments, filter_contours
 
 
 def shape_detector():

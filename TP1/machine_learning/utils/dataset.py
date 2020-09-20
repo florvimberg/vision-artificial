@@ -2,7 +2,7 @@ import glob
 import cv2
 import csv
 import numpy as np
-from TP1.common.common_utils import get_greatest_contour
+from common.common_utils import get_greatest_contour
 
 labels = {
     "rectangle": 1,

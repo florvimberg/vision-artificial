@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 
-from TP1.common.common_utils import filter_contours
-from TP1.machine_learning.utils.dataset import int_to_label
-from TP1.open_cv.tp1 import get_greatest_contour
+from common.common_utils import filter_contours
+from machine_learning.utils.dataset import int_to_label
+from open_cv.tp1 import get_greatest_contour
 
 
 def on_trackbar_change(val):
