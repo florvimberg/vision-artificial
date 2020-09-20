@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 
-from common.common_utils import filter_contours
-from machine_learning.utils.dataset import int_to_label
-from open_cv.tp1 import get_greatest_contour
+from TP1.common.common_utils import filter_contours, get_greatest_contour
+from TP1.machine_learning.utils.dataset import int_to_label
 
 
 def on_trackbar_change(val):
@@ -66,7 +65,6 @@ if __name__ == '__main__':
             cv2.putText(flipped, label, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
         cv2.imshow(window_name, flipped)
-        cv2.imshow('debug', closing)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
