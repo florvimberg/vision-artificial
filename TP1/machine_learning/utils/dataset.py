@@ -1,6 +1,10 @@
 import glob
+import math
+
 import cv2
 import csv
+
+import numpy
 import numpy as np
 from TP1.common.common_utils import get_greatest_contour
 
@@ -26,18 +30,31 @@ def hu_moments_from_image(file):
     image = cv2.imread(file)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    _, threshold = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+    block_size = 67 #Tamaño del bloque a comparar, debe ser impar.
+    bin = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, block_size, 2)
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
-    opening = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel)
-    closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
+    # Invert the image so the area of the UAV is filled with 1's. This is necessary since
+    # cv::findContours describes the boundary of areas consisting of 1's.
+    bin = 255 - bin  # como sabemos que las figuras son negras invertimos los valores binarios para que esten en 1.
 
-    contours, _ = cv2.findContours(closing, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    max_contour = get_greatest_contour(contours)
+    # Tamaño del bloque a recorrer
+    kernel = numpy.ones((3, 3), numpy.uint8)
+    # buscamos eliminar falsos positivos (puntos blancos en el fondo) para eliminar ruido.
+    bin = cv2.morphologyEx(bin, cv2.MORPH_ERODE, kernel)
 
-    moments = cv2.moments(max_contour)
-    return cv2.HuMoments(moments)
+    # encuetra los contornos, chain aprox simple une algunos puntos para que no sea discontinuo.
+    contours, hierarchy = cv2.findContours(bin, cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    # Agarra el contorno de area maxima
+    shape_contour = max(contours, key=cv2.contourArea)
 
+    moments = cv2.moments(shape_contour)  # momentos de inercia
+    huMoments = cv2.HuMoments(moments)  # momentos de Hu
+
+    # hacemos esto para que los valores no sean taaan chiquitos (log)
+    for i in range(0, 7):
+        huMoments[i] = -1 * math.copysign(1.0, huMoments[i]) * math.log10(
+            abs(huMoments[i]))  # Mapeo para agrandar la escala.
+    return huMoments
 
 def write_hu_moments_row(row, writer):
     writer.writerow(row)

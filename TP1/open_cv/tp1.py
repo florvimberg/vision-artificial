@@ -31,7 +31,7 @@ def shape_detector():
         # 2. Aplicar un threshold con umbral ajustable con una barra de desplazamiento
         #   se pueden incluir opciones de ajuste automático
         trackbar_val = cv2.getTrackbarPos(trackbar_name, window_name)
-        _, thresh = cv2.threshold(gray, trackbar_val, 255, cv2.THRESH_BINARY)
+        _, thresh = cv2.threshold(gray, trackbar_val, 255, cv2.THRESH_BINARY_INV)
 
         # 3. Aplicar operaciones morfológicas para eliminar ruido de la imagen
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
