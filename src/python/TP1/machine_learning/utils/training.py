@@ -1,7 +1,7 @@
 import cv2
 import csv
 import numpy as np
-from machine_learning.utils.dataset import label_to_int
+from TP1.machine_learning.utils.dataset import label_to_int
 
 
 def load_dataset():
@@ -9,7 +9,7 @@ def load_dataset():
         features = []
         labels = []
 
-        reader = csv.reader(file)
+        reader = csv.reader(file, delimiter=',')
         for row in reader:
             features.append((row[:7]))
             labels.append(label_to_int(row[7]))
@@ -22,11 +22,18 @@ def load_dataset():
 def train():
     features, labels = load_dataset()
 
-    classifier = cv2.ml.SVM_create()
-    classifier.setKernel(cv2.ml.SVM_RBF)
-
+    # decision tree
+    classifier = cv2.ml.DTrees_create()
+    classifier.setCVFolds(1)
+    classifier.setMaxDepth(10)
     classifier.train(features, cv2.ml.ROW_SAMPLE, labels)
-    classifier.save('svm_data.dat')
+    classifier.save('tree_shapes_model.yaml')
+
+    # svm
+    # classifier = cv2.ml.SVM_create()
+    # classifier.setKernel(cv2.ml.SVM_RBF)
+    # classifier.train(features, cv2.ml.ROW_SAMPLE, labels)
+    # classifier.save('svm_data.dat')
 
     return
 
