@@ -26,22 +26,22 @@ opencv_ml_dtree:
          value: 1.
          norm_class_idx: 0
          splits:
-            - { var:0, quality:24., le:6.8646872043609619e-01 }
+            - { var:0, quality:24., le:7.4622797966003418e-01 }
       -
          depth: 1
          value: 2.
          norm_class_idx: 1
-      -
-         depth: 1
-         value: 1.
-         norm_class_idx: 0
          splits:
-            - { var:0, quality:24., le:7.4555784463882446e-01 }
+            - { var:2, quality:24., le:2.4438245296478271e+00 }
       -
          depth: 2
          value: 3.
          norm_class_idx: 2
       -
          depth: 2
+         value: 2.
+         norm_class_idx: 1
+      -
+         depth: 1
          value: 1.
          norm_class_idx: 0
